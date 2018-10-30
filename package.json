@@ -15,8 +15,8 @@
     "npm": ">= 3.0.0"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/onexdata/reaction-gateway.git"
+    "type": "git",
+    "url": "https://github.com/onexdata/reaction-gateway.git"
   },
   "scripts": {
     "test": "npm run eslint && npm run mocha",
@@ -50,6 +50,7 @@
     "feathers-socketio": "^2.0.1",
     "mysql2": "^1.6.1",
     "os-utils": "0.0.14",
+    "portfinder": "^1.0.19",
     "sequelize": "^4.38.0",
     "sqlite3": "^4.0.2"
   },
