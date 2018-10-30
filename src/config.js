@@ -28,7 +28,42 @@ module.exports = {
       }
     },
     definitions: {
-      messages: { model: 'message', auto: true },  
+      status: {
+        config: {
+          show: {
+            // WARNING: Showing environment variables can be a security risk.
+            env: false,
+            // WARNING: Showing persistence can be a security risk.
+            persistence: false,
+            // WARNING: Showing net details can be a security risk.
+            net: false,
+            disk: false,
+            errors: false,
+            build: false,
+            config: false,
+            environment: false,
+            debug: false,
+            mode: false,
+            history: true,
+            os: true,
+            cpu: true,
+            app: true,
+            gateway: true,
+            systemMemory: true,
+            systemUptime: true,
+            processMemory: true,
+            processUptime: true,
+          },
+          history: {
+            // Interval in ms to poll status history.
+            interval: 1000,
+            // Number of history snapshots to store.
+            count: 60
+          },
+          // How long to cache disk statistics in seconds (a query can take a second or longer).
+          diskCache: 60
+        }
+      }
     }
   }
 }

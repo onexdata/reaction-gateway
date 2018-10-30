@@ -8,7 +8,7 @@ debug.log = dataLog.bind(dataLog);
 
 module.exports = (context) => {
 //  debug(`${context.method} ${context.path} Arguments:`, context.arguments)
-  debug('droppin shiz');
+  debug('demo');
   //console.log(context.app.get('config'));
   
   context.reactor = { reaction: 'this is reactor'};

@@ -34,11 +34,10 @@ module.exports = (connectionURL) => {
   case 'mssql':
   case 'mysql':
   case 'mariadb':
-    debug('SQL engine identified. Using sequelize.');
     const DB = require('sequelize');
-    console.log(dbName, options)
     const db = new DB(dbName, ds.username, ds.password, options);
     debug('Complete.');
+    console.log(`Datasource is ${protocol} on ${ds.host}/${dbName}`)
     return { DB, db, defaultService: require('feathers-sequelize') };
   default:
     throw new Error(`The database protocol ${protocol} is not supported. Is there an error in what you typed? (${connectionURL})`);

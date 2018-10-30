@@ -8,7 +8,7 @@ module.exports = function ( appConfig, config = {show:{}}, persistence ) {
   return {
     async find(params) {
       let status = {
-        container: {
+        system: {
         },
         process: {
         },
@@ -25,10 +25,15 @@ module.exports = function ( appConfig, config = {show:{}}, persistence ) {
       if (config.show.debug) status.process.debug = process.env.DEBUG || 'n/a';
       // Mode
       if (config.show.mode) status.process.mode = 'n/a';
-      // Version
-      if (config.show.version) status.process.version = appConfig.server.version;
+      // App details
+      if (config.show.app) status.process.app = appConfig.reactor.app;
+      // server details
+      if (config.show.gateway) status.process.gateway = {
+        name: appConfig.reactor.server.name,
+        version: appConfig.reactor.server.version,
+      }
       // Config
-      if (config.show.version) status.process.config = appConfig;
+      if (config.show.config) status.process.config = appConfig;
       // Errors
       if (config.show.errors) status.errors = errorHistory.get();
 
@@ -36,15 +41,15 @@ module.exports = function ( appConfig, config = {show:{}}, persistence ) {
       if (config.show.history) status.history = stats;
       
       // Network
-      if (config.show.net) status.container.net = os.networkInterfaces();
+      if (config.show.net) status.system.net = os.networkInterfaces();
 
       // Uptime
-      if (config.show.containerUptime) status.container.up = os.uptime().toFixed(0);
+      if (config.show.systemUptime) status.system.up = os.uptime().toFixed(0);
       if (config.show.processUptime) status.process.up = process.uptime().toFixed(0);
 
       // Memory
-      if (config.show.containerMemory) {
-        status.container.memory = {
+      if (config.show.systemMemory) {
+        status.system.memory = {
           total: (os.totalmem() / 1024 / 1024 / 1024).toFixed(2) + 'GB',
           used: ((os.totalmem() - os.freemem()) / 1024 / 1024 / 1024).toFixed(2) + 'GB',
           free: (os.freemem() / 1024 / 1024 / 1024).toFixed(2) + 'GB',
@@ -59,15 +64,15 @@ module.exports = function ( appConfig, config = {show:{}}, persistence ) {
       }
 
       // OS
-      if (config.show.os) status.container.os = `${os.type()} ${os.release()} (${os.platform()}/${os.arch()})`;
+      if (config.show.os) status.system.os = `${os.type()} ${os.release()} (${os.platform()}/${os.arch()})`;
       
       // Environment variables
-      if (config.show.env) status.container.env = process.env;
+      if (config.show.env) status.system.env = process.env;
 
       // CPU
       if (config.show.os) {
-        status.container.cpu = os.cpus()[0].model;
-        status.container.cores = os.cpus().length;
+        status.system.cpu = os.cpus()[0].model;
+        status.system.cores = os.cpus().length;
       }
 
       // Disk
@@ -80,7 +85,7 @@ module.exports = function ( appConfig, config = {show:{}}, persistence ) {
           diskCache = await disk();
           debug('Disk cache refreshed');
         }
-        status.container.disk = diskCache;
+        status.system.disk = diskCache;
       }
 
 

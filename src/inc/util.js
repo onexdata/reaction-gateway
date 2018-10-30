@@ -16,6 +16,23 @@ function stuffIn (source) {
   return fs.readdirSync(source).map(name => path.join(source, name));
 }
 
+function exists (path) {
+  if (fs.existsSync(path)) return true
+  return false
+}
+
+// Checks if item exists with any basepaths...
+function anyExists (paths, names, item) {
+  let ret = {path: false, source: names[2]}
+  paths.forEach((loc, index) => {
+    let checkPath = path.resolve(loc + item)
+    if (exists(checkPath)) {
+      ret = {path: checkPath, source: names[index]}
+    }
+  })
+  return ret
+}
+
 // Safely attempt something, can also call something when done...
 function tryIt (fn, cb) {
   var err;
@@ -47,10 +64,13 @@ module.exports = {
   filesIn: filesIn,
   stuffIn: stuffIn,
   try: tryIt,
-  join: path.join,
   main: main,
   root: root,
+  exists: exists,
+  anyExists: anyExists,
+  join: path.join,
   basename: path.basename,
+  resolve: path.resolve,
   pjson: pjson,
   fileName: (name) => path.parse(name).name,
   fileExt: (name) => path.parse(name).ext,
