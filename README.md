@@ -1,4 +1,4 @@
-# reactions
+# Reaction Gateway
 Simple "just let me develop" API gateway for your enterprise platform.
 
 ## Getting started
