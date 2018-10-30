@@ -1,0 +1,16 @@
+Add datasource support to services
+Add error logging to db
+Add request logging to db
+
+Changelog
+
+0.1.2
+
+  * Added multiple datasource support.
+  * Added
+
+0.1.1
+
+  * Added node config to turbo charge configuration.
+  * Restructured the folders to make more sense.
+  * Moved config to the config folder.

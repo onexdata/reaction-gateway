@@ -1,0 +1,17 @@
+const debug = require('debug')('reactor:services:requests');
+
+var dataLog = function (args) {
+  //console.log('dataLog:', args);
+};
+
+debug.log = dataLog.bind(dataLog);
+
+module.exports = (context) => {
+//  debug(`${context.method} ${context.path} Arguments:`, context.arguments)
+  debug('droppin shiz');
+  //console.log(context.app.get('config'));
+  
+  context.reactor = { reaction: 'this is reactor'};
+  // console.log(context)
+  return context;
+};
