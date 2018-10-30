@@ -1,7 +1,7 @@
 {
-  "name": "gateway",
-  "description": "Project X API Gateway",
-  "version": "0.3.0",
+  "name": "reaction-gateway",
+  "description": "API Reaction Gateway",
+  "version": "0.3.3",
   "main": "src",
   "keywords": [
     "gateway"
@@ -22,7 +22,8 @@
   },
   "nodemonConfig": {
     "watch": [
-      "src/", "public/"
+      "src/",
+      "public/"
     ],
     "ext": "js,json,html,css,svg",
     "events": {
@@ -40,11 +41,9 @@
     "chokidar": "^2.0.4",
     "config": "^2.0.1",
     "debug": "^3.1.0",
-    "feathers-knex": "^3.3.0",
     "feathers-rest": "^1.8.1",
     "feathers-sequelize": "^3.1.2",
     "feathers-socketio": "^2.0.1",
-    "mysql": "^2.16.0",
     "mysql2": "^1.6.1",
     "os-utils": "0.0.14",
     "sequelize": "^4.38.0",

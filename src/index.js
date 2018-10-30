@@ -1,10 +1,18 @@
-process.env.DEBUG = 'reactor:*';
+// Set the default configuration...
+var CONFIG = require("config");
+CONFIG.util.setModuleDefaults("reactor", require('./config.js'));
 
-console.log(`
- __   ___       __  ___  __   __
-|__) |__   /\\  /  '  |  /  \\ |__)
-|  \\ |___ /~~\\ \\__,  |  \\__/ |  \\
-`);
-process.env['NODE_CONFIG'] = JSON.stringify( { server: { build: 9 } } );
+// process.env['NODE_CONFIG'] = JSON.stringify( { server: { build: 9 } } );
+
+// Get the app configuration...
 const config = require('config');
+
+// Draw the logo...
+console.log(config.reactor.server.logo)
+
 const app = require('./inc/start')( config );
+module.exports = {
+  app: app,
+  util: require('./inc/util'),
+  config: config
+}

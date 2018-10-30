@@ -7,6 +7,13 @@
  * 
  */
 module.exports = (connectionURL) => {
+  const path = require('path')
+
+  // Prepopulate the persistence layer with demo data if asking for a demo...
+  if (connectionURL === 'demo') {
+    connectionURL = `sqlite://localhost/node_modules/reaction-gateway/demo.sqlite`
+  }
+
   const debug = require('debug')('reactor:start:initPersistence');
   const {URL} = require('url');
   const ds = new URL(connectionURL);
@@ -29,6 +36,7 @@ module.exports = (connectionURL) => {
   case 'mariadb':
     debug('SQL engine identified. Using sequelize.');
     const DB = require('sequelize');
+    console.log(dbName, options)
     const db = new DB(dbName, ds.username, ds.password, options);
     debug('Complete.');
     return { DB, db, defaultService: require('feathers-sequelize') };

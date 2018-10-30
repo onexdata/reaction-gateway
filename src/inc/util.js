@@ -23,13 +23,35 @@ function tryIt (fn, cb) {
   if (cb) cb(err || null);
 }
 
+// Returns true if the main module (index), otherwise returns false (you're in node_modules)
+function main() {
+  return require.main === module
+}
+
+// Returns the path of the root project folder
+function root() {
+  return path.dirname(require.main.filename);
+}
+
+// Returns package.json from the root project if it exists.
+function pjson() {
+  var contents = fs.readFileSync(root() + '/package.json');  
+  if (contents) {
+    contents = JSON.parse(contents);
+  }
+  return contents || {}
+}
+
 module.exports = {
   foldersIn: foldersIn,
   filesIn: filesIn,
   stuffIn: stuffIn,
   try: tryIt,
   join: path.join,
+  main: main,
+  root: root,
   basename: path.basename,
+  pjson: pjson,
   fileName: (name) => path.parse(name).name,
   fileExt: (name) => path.parse(name).ext,
   logo: () => { console.log('Reactor'); }

@@ -1,20 +1,25 @@
-
+const util = require('./../util')
 module.exports = function ( config ) {
-  console.log(`Reactor v${config.server.version} ${config.server.build}`);
+
+  // Output the software names and versions...
+  console.log(`${config.reactor.server.name} v${config.reactor.server.version}`,
+    `running ${config.reactor.app.name} v${config.reactor.app.version}`);
+  
   const debug = require('debug')('reactor:start');
   debug('Booting...');
   const {app, express, socketio} = require('./server')(config);
   // Make config available to services via context.app.get('config')
   app.set('config', config);
-  debug('Server loaded.');
+  debug('Server loaded!.');
 
   // Load the main persistence connection...
-  const data = require('./persistence')(config.server.persistence);
+  const data = require('./persistence')(config.reactor.server.persistence);
   debug('Persistence loaded.');
 
   // Load the logging output 
   const loadService = require('./service')(config, app, data);
   var services = {};
+
 
   // Setup each enabled service...
   let definitions = config.services.definitions;
