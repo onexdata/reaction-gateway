@@ -52,8 +52,8 @@ function root() {
 
 // Returns package.json from the root project if it exists.
 function pjson(loc) {
-  let root = loc ? __dirname : root();
-  var contents = fs.readFileSync(root + '/package.json');  
+  let rootLoc = loc ? __dirname + './../../' : root();
+  var contents = fs.readFileSync(rootLoc + '/package.json');  
   if (contents) {
     contents = JSON.parse(contents);
   }
