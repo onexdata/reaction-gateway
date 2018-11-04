@@ -7,13 +7,23 @@ Add request logging to db
 
 Changelog
 
+0.4.9
+
+  * Fixed default /status service to honor config.history interval and count.
+
+0.4.8
+
+  * Started keeping a changelog.
+  * Added ability for repo to run itself (for unit testing).
+  * Removed chokidar support in favor of nodemon for dev mode.
+  * Upgraded dependencies.
+
 0.1.2
 
   * Added multiple datasource support.
-  * Added
 
 0.1.1
 
-  * Added node config to turbo charge configuration.
+  * Added node-config to turbo charge configuration.
   * Restructured the folders to make more sense.
   * Moved config to the config folder.

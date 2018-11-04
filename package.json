@@ -1,7 +1,7 @@
 {
   "name": "reaction-gateway",
   "description": "API Reaction Gateway",
-  "version": "0.4.8",
+  "version": "0.4.9",
   "main": "src",
   "keywords": [
     "gateway"

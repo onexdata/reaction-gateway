@@ -12,7 +12,6 @@ module.exports = function ( appConfig, config = {show:{}}, persistence ) {
         },
         process: {
         },
-        //errors: app.reactor.errors.count
       };
       
       // Add optional status items...
