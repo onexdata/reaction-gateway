@@ -1,4 +1,9 @@
 const os = require('os');
+const config = require('config');
+
+let statConfig = config.reactor.services.definitions.status.config
+var interval = statConfig.history.interval;
+var seconds = statConfig.history.count;
 
 // Add up the total machine idle and processing time
 function machineCPUTotal(cpus) {
@@ -15,9 +20,6 @@ function machineCPUTotal(cpus) {
   c.total = c.user + c.nice + c.sys + c.idle + c.irq;
   return { 'idle': c.idle, 'total': c.total };  
 }
-
-var interval = 1000;
-var seconds = 5;
 
 function getStats(previous, interval) {
   // Get the cpu usage since the last interval...

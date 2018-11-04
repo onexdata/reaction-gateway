@@ -25,10 +25,24 @@ module.exports = {
       pagination: {
         default: 20,
         max: 1000
+      },
+      base: {
+        // The base.folder can let you host things like /src/legacy-services/v1 etc.
+          // Note that /services/ will check /services (root of your project) OR /src/services/
+          folder: '/services/',
+        // The base.endpoint can let you prepend your service with things like /api/v2/ etc.
+        mount: '/'
       }
     },
     definitions: {
       status: {
+        base: {
+          // This is where you would redefine the base mount point for an individual service...
+          mount: '/',
+          // This is where you would redefine the base folder for an individual service...
+          // Note that /services/ will check /services (root of your project) OR /src/services/
+          folder: '/src/services/'
+        },
         config: {
           show: {
             // WARNING: Showing environment variables can be a security risk.

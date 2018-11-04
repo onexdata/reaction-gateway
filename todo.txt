@@ -1,16 +1,34 @@
-Add datasource support to services
+Add endpoint bases to services and defaults for things like /api/v1/ etc. worth 0.0.1 points
+Improve error messages for service folders that don't exist yet (or better yet; auto-create them with scaffolding) worth 0.1.0 points
+
+DONE Add datasource support to services
 Add error logging to db
 Add request logging to db
 
 Changelog
 
+0.5.0
+
+  * Added base folder and mount points for services, including defaults and per service.
+  * Improved errors for folder and service name issues (because they are the most common issues).
+
+0.4.9
+
+  * Fixed default /status service to honor config.history interval and count.
+
+0.4.8
+
+  * Started keeping a changelog.
+  * Added ability for repo to run itself (for unit testing).
+  * Removed chokidar support in favor of nodemon for dev mode.
+  * Upgraded dependencies.
+
 0.1.2
 
   * Added multiple datasource support.
-  * Added
 
 0.1.1
 
-  * Added node config to turbo charge configuration.
+  * Added node-config to turbo charge configuration.
   * Restructured the folders to make more sense.
   * Moved config to the config folder.
