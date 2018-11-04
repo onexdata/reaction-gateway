@@ -42,7 +42,7 @@ function tryIt (fn, cb) {
 
 // Returns true if the main module (index), otherwise returns false (you're in node_modules)
 function main() {
-  return require.main === module
+  return global.isMain
 }
 
 // Returns the path of the root project folder
@@ -52,6 +52,8 @@ function root() {
 
 // Returns package.json from the root project if it exists.
 function pjson(loc) {
+  // If we're the module (developing)
+  if (main()) loc = true
   let rootLoc = loc ? __dirname + './../../' : root();
   var contents = fs.readFileSync(rootLoc + '/package.json');  
   if (contents) {

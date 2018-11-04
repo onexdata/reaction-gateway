@@ -1,4 +1,7 @@
-Add datasource support to services
+Add endpoint bases to services and defaults for things like /api/v1/ etc. worth 0.0.1 points
+Improve error messages for service folders that don't exist yet (or better yet; auto-create them with scaffolding) worth 0.1.0 points
+
+DONE Add datasource support to services
 Add error logging to db
 Add request logging to db
 
