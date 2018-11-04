@@ -50,6 +50,12 @@ function root() {
   return path.dirname(require.main.filename);
 }
 
+function removePreceeding(str, match) {
+  if (str.charAt(0) === match) str = str.substr(1)
+  if (str.charAt(0) === match) str = removePreceeding(str, match)
+  return str
+}
+
 // Returns package.json from the root project if it exists.
 function pjson(loc) {
   // If we're the module (developing)
@@ -75,6 +81,7 @@ module.exports = {
   basename: path.basename,
   resolve: path.resolve,
   pjson: pjson,
+  removePreceeding: removePreceeding,
   fileName: (name) => path.parse(name).name,
   fileExt: (name) => path.parse(name).ext,
   logo: () => { console.log('Reactor'); }

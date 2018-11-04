@@ -7,6 +7,11 @@ Add request logging to db
 
 Changelog
 
+0.5.0
+
+  * Added base folder and mount points for services, including defaults and per service.
+  * Improved errors for folder and service name issues (because they are the most common issues).
+
 0.4.9
 
   * Fixed default /status service to honor config.history interval and count.
