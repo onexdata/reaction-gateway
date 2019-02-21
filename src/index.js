@@ -11,8 +11,13 @@ CONFIG.util.setModuleDefaults('reactor', require('./config.js'));
 // Get the app configuration...
 const config = require('config');
 
+const chalk = require('chalk');
+
+// Set the debug mode...
+process.env.debug = config.reactor.server.debug;
+
 // Draw the logo...
-console.log(config.reactor.server.logo);
+console.log(chalk[config.reactor.server.branding.color](config.reactor.server.branding.logo));
 
 const app = require('./inc/start')( config );
 module.exports = {

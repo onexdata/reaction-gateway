@@ -5,7 +5,14 @@ module.exports = {
     name: util.pjson().name,
     version: util.pjson().version,
   },
+  secrets: {
+    auth: {
+      secret: 'changeThis!'
+    }
+  },
   server: {
+    // You can watch the internals
+    debug: 'reactor:*',
     // You can over-ride this if you want to hide which gateway you're running.
     name: 'Reactor',
     // You can over-ride this if you want to as well.
@@ -13,7 +20,10 @@ module.exports = {
     // By default, will try port 8000 and use the next available, override here.
     port: { from: 8000, to: 8999 },
     // You can override the logo as well. Use a string or a script that exports a string.
-    logo: require('./inc/logo'),
+    branding: {
+      logo: require('./inc/logo'),
+      color: 'yellow'
+    },
     // Where the data from services comes from.
     persistence: 'demo'
   },
@@ -35,6 +45,9 @@ module.exports = {
       }
     },
     definitions: {
+      users: {
+
+      },
       status: {
         base: {
           // This is where you would redefine the base mount point for an individual service...

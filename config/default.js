@@ -10,12 +10,18 @@
  */
 var defer = require('config/defer').deferConfig;
 module.exports = {
+  secrets: {
+    auth: {
+      secret: 'changeThis!'
+    }
+  },
   server: {
+    debug: '',
     port: 3030,
     version: '0.1.1',
     /* Configuration can be built at runtime.  Deferred functions cannot be replaced.  Deferred functions cannot alter anything (must be immutable). */
     build : defer(function ()  {
-      return this.server.version + ' ' + Math.random()
+      return this.server.version + ' ' + Math.random();
     }),
     logs: {
       persistence: 'mysql://root:Makeitso1@localhost/logs'
