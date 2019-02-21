@@ -18,7 +18,7 @@ module.exports = {
     // You can over-ride this if you want to as well.
     version: util.pjson(true).version,
     // By default, will try port 8000 and use the next available, override here.
-    port: { from: 9000, to: 9999 },
+    port: { from: 3001, to: 9999 },
     // You can override the logo as well. Use a string or a script that exports a string.
     branding: {
       logo: require('./inc/logo'),
@@ -45,9 +45,6 @@ module.exports = {
       }
     },
     definitions: {
-      users: {
-
-      },
       status: {
         base: {
           // This is where you would redefine the base mount point for an individual service...

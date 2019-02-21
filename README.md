@@ -5,13 +5,13 @@ everybody needs!
 ## Getting started
 
 `
-npm i reaction-gateway
+npm i @acter/gateway
 `
 
-## Creating an app
+## Creating an API
 
 `
-const gateway = require('reaction-gateway')
+const gateway = require('@acter/gateway')
 `
 
 This will create a gateway and setup endpoints for healthchecking (fully Kubernetes or other orchistrator compatible).

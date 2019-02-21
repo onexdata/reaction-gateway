@@ -1,4 +1,4 @@
-const debug = require('debug')('reactor:services:requests');
+const debug = require('debug')('acter:services:requests');
 
 var dataLog = function (args) {
   //console.log('dataLog:', args);

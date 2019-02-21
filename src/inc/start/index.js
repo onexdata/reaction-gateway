@@ -7,7 +7,7 @@ module.exports = function ( config ) {
   console.log(`${config.reactor.server.name} v${config.reactor.server.version}`,
     `running ${config.reactor.app.name} v${config.reactor.app.version}`);
   
-  const debug = require('debug')('reactor:start');
+  const debug = require('debug')('acter:start');
   debug('Booting...');
   const {app, express, socketio, memory, authentication} = require('./server')(config);
   
@@ -42,20 +42,22 @@ module.exports = function ( config ) {
 
   // Setup each enabled service...
   let definitions = config.reactor.services.definitions;
+  let definedUsers = false;
   Object.keys(definitions).forEach(name => {
     let service = definitions[name];
     debug('Loading service', name);
     services[name] = loadService(name, service);
-    if (name === 'users') {
-      debug('Existing user service found.');
-      console.log(chalk.yellow('User service connected.'));
-    }
+    if (name === 'users') definedUsers = true;
   });
   debug('Services loaded.');
 
+  // See if users have been defined...
+  if (!definedUsers) {
+    console.log('No users service has been defined, creating one in memory');
+    app.use('/users', memory());
+  }
   // Now load the authentication service...
-  app.use('/users', memory())
-    .configure(authentication.auth({ secret: config.reactor.secrets.auth }))
+  app.configure(authentication.auth({ secret: config.reactor.secrets.auth }))
     .configure(authentication.local())
     .configure(authentication.jwt());
 

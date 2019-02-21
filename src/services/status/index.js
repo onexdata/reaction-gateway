@@ -1,6 +1,6 @@
 const {disk, stats} = require('../../inc/initStats');
 const errorHistory = require('../../inc/initErrorTracking');
-const debug = require('debug')('reactor:service:status');
+const debug = require('debug')('acter:service:status');
 const os = require('os');
 var diskCache = false;
 
