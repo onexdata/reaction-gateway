@@ -12,13 +12,13 @@ module.exports = {
   },
   server: {
     // You can watch the internals
-    debug: 'reactor:*',
+    debug: 'acter:*',
     // You can over-ride this if you want to hide which gateway you're running.
-    name: 'Reactor',
+    name: 'Acter',
     // You can over-ride this if you want to as well.
     version: util.pjson(true).version,
     // By default, will try port 8000 and use the next available, override here.
-    port: { from: 8000, to: 8999 },
+    port: { from: 9000, to: 9999 },
     // You can override the logo as well. Use a string or a script that exports a string.
     branding: {
       logo: require('./inc/logo'),
