@@ -1,10 +1,11 @@
 # Reaction Gateway
-Simple "just let me develop" API gateway for your enterprise platform.
+Simple "just let me develop" API gateway for your enterprise platform with loads of built-in tools
+everybody needs!
 
 ## Getting started
 
 `
-npm install reaction-gateway --save
+npm i reaction-gateway
 `
 
 ## Creating an app
@@ -13,7 +14,12 @@ npm install reaction-gateway --save
 const gateway = require('reaction-gateway')
 `
 
-This will create a gateway and setup endpoints for healthchecking.
+This will create a gateway and setup endpoints for healthchecking (fully Kubernetes or other orchistrator compatible).
+
+It will also setup common app defaults and an authorization platform (uses [passport](http://www.passportjs.org/), so you'll be able to auth users using user/pass, JWT, Facebook, Google, you name it, you got it).  user/pass and JWT are installed by default since everyone uses them.
+
+Passport [supports over 500 authorization mechanisms.](http://www.passportjs.org/packages/)
+
 
 ## Configuration
 Reactor is already configured by default, but you can override anything. See the defaults section
@@ -23,7 +29,7 @@ below for a list of defaults and what you can override.
 Create a /config folder in the root of your project with a file named default.js
 
 **default.js contents**
-`
+```
 module.exports = {
   server: {
     // You can over-ride this if you want to hide which gateway you're running.
@@ -52,7 +58,7 @@ module.exports = {
     }
   }
 }
-`
+```
 
 
 ### Defaults
@@ -61,7 +67,7 @@ Configuration is a snap!
 Reactor comes with enough defaults so that you can just require it and be up and running.
 
 
-`
+```
 module.exports = {
   server: {
     port: 3030, // By default, will try port 8000 and use the next available, override here.
@@ -109,3 +115,4 @@ available using config.server.port
 ### Entry point
 You start at src/index.js
 The logo is drawn, configuration is loaded, and the platform is started.
+```
