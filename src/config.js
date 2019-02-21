@@ -6,9 +6,7 @@ module.exports = {
     version: util.pjson().version,
   },
   secrets: {
-    auth: {
-      secret: 'changeThis!'
-    }
+    auth: 'changeThis!'
   },
   server: {
     // You can watch the internals
@@ -25,7 +23,8 @@ module.exports = {
       color: 'yellow'
     },
     // Where the data from services comes from.
-    persistence: 'demo'
+    // persistence: 'demo'
+    persistence: 'mysql://root:pass@localhost/uprospect',
   },
   services: {
     defaults: {
@@ -39,12 +38,14 @@ module.exports = {
       base: {
         // The base.folder can let you host things like /src/legacy-services/v1 etc.
         // Note that /services/ will check /services (root of your project) OR /src/services/
-        folder: '/services/',
+        folder: '/src/services/',
         // The base.endpoint can let you prepend your service with things like /api/v2/ etc.
         mount: '/'
       }
     },
     definitions: {
+      call: {},
+      cvs: { model: 'cvs', auto: true },
       status: {
         base: {
           // This is where you would redefine the base mount point for an individual service...

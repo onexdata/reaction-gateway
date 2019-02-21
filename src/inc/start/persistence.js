@@ -13,7 +13,7 @@ module.exports = (connectionURL) => {
 
   // Prepopulate the persistence layer with demo data if asking for a demo...
   if (connectionURL === 'demo') {
-    connectionURL = 'sqlite://localhost/node_modules/reaction-gateway/demo.sqlite';
+    connectionURL = 'sqlite://localhost/demo.sqlite';
   }
 
   const debug = require('debug')('acter:start:initPersistence');

@@ -9,6 +9,8 @@ module.exports = function ( config ) {
   
   const debug = require('debug')('acter:start');
   debug('Booting...');
+
+  // bootstrap the server...
   const {app, express, socketio, memory, authentication} = require('./server')(config);
   
   // Make config available to services via context.app.get('config')
@@ -53,14 +55,52 @@ module.exports = function ( config ) {
 
   // See if users have been defined...
   if (!definedUsers) {
-    console.log('No users service has been defined, creating one in memory');
-    app.use('/users', memory());
+    console.log('Users must be defined. Creating them.');
+    loadService('users', { model: 'users', auto: true } );
+    //app.use('users', memory());
   }
+
+  app.service('users').hooks({
+    // Make sure `password` never gets sent to the client
+    after: authentication.local.hooks.protect('password')
+  });
+   
   // Now load the authentication service...
   app.configure(authentication.auth({ secret: config.reactor.secrets.auth }))
     .configure(authentication.local())
     .configure(authentication.jwt());
 
+  // Setup a hook to only allow valid JWTs or successful 
+  // local auth to authenticate and get new JWT access tokens
+  app.service('authentication').hooks({
+    before: {
+      create: [
+        // You can chain multiple strategies
+        authentication.auth.hooks.authenticate(['jwt', 'local'])
+      ],
+      remove: [
+        authentication.auth.hooks.authenticate('jwt')
+      ]
+    },
+    after: {
+      create: [
+        (context) => {
+          context.result.user = context.params.user;
+          delete context.result.user.password;
+        }
+      ]
+    }
+  });
+
+  app.service('users').hooks({
+    before: {
+      create: [
+        authentication.local.hooks.hashPassword({ passwordField: 'password' })
+      ]
+    }
+  });
+
+  //app.service('users').create({email: 'frank@test.com', password: '123'});
 
   app.use(express.errorHandler());
 

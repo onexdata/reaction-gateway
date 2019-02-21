@@ -11,9 +11,7 @@
 var defer = require('config/defer').deferConfig;
 module.exports = {
   secrets: {
-    auth: {
-      secret: 'changeThis!'
-    }
+    auth: 'changeThis!'
   },
   server: {
     debug: '',
