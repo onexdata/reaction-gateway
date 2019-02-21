@@ -47,7 +47,7 @@
     "chalk": "^2.4.2",
     "check-disk-space": "^1.5.0",
     "config": "^2.0.1",
-    "debug": "^3.2.6",
+    "debug": "^4.1.1",
     "feathers-memory": "^3.0.2",
     "feathers-rest": "^1.8.1",
     "feathers-sequelize": "^3.1.3",
