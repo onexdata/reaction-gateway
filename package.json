@@ -1,7 +1,7 @@
 {
   "name": "reaction-gateway",
   "description": "API Reaction Gateway",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "main": "src",
   "keywords": [
     "gateway"
@@ -56,7 +56,7 @@
   "devDependencies": {
     "eslint": "^5.3.0",
     "mocha": "^5.2.0",
-    "nodemon": "^1.18.4",
+    "nodemon": "^1.18.10",
     "request": "^2.88.0",
     "request-promise": "^4.2.2"
   }
