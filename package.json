@@ -1,7 +1,7 @@
 {
-  "name": "reaction-gateway",
-  "description": "API Reaction Gateway",
-  "version": "0.5.1",
+  "name": "@acter/gateway",
+  "description": "Acter API Gateway",
+  "version": "0.6.1",
   "main": "src",
   "keywords": [
     "gateway"

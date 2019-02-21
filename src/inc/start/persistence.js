@@ -16,7 +16,7 @@ module.exports = (connectionURL) => {
     connectionURL = 'sqlite://localhost/node_modules/reaction-gateway/demo.sqlite';
   }
 
-  const debug = require('debug')('reactor:start:initPersistence');
+  const debug = require('debug')('acter:start:initPersistence');
   const {URL} = require('url');
   const ds = new URL(connectionURL);
   let protocol = ds.protocol.slice(0, -1);

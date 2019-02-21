@@ -7,7 +7,7 @@
  * @param {*} persistence - The persistance artifact; the engine that accepts multiple datasources and generates interfaces.
  * 
  */
-const debug = require('debug')('reactor:start:initService');
+const debug = require('debug')('acter:start:initService');
 const chalk = require('chalk');
 const util = require('./../util');
 

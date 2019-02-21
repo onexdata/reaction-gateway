@@ -6,7 +6,7 @@
  * 
  */
 module.exports = (config) => {
-  const debug = require('debug')('reactor:start:initServer');
+  const debug = require('debug')('acter:start:initServer');
   debug('Requiring core libraries.');
   const feathers = require('@feathersjs/feathers');
   const express = require('@feathersjs/express');
