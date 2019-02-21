@@ -1,7 +1,7 @@
 const os = require('os');
 const config = require('config');
 
-let statConfig = config.reactor.services.definitions.status.config
+let statConfig = config.reactor.services.definitions.status.config;
 var interval = statConfig.history.interval;
 var seconds = statConfig.history.count;
 
@@ -89,7 +89,7 @@ setInterval(() => {
 }, interval);
 
 // This takes a while, only call it once every 5 seconds or more...
-getDisk = async function(lastDisk, seconds) {
+const getDisk = async function(lastDisk, seconds) {
   const disk = require('check-disk-space');
   console.log('disk:', __dirname);
   return await disk('C:').then((space) => {

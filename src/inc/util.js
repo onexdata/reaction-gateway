@@ -17,20 +17,20 @@ function stuffIn (source) {
 }
 
 function exists (path) {
-  if (fs.existsSync(path)) return true
-  return false
+  if (fs.existsSync(path)) return true;
+  return false;
 }
 
 // Checks if item exists with any basepaths...
 function anyExists (paths, names, item) {
-  let ret = {path: false, source: names[2]}
+  let ret = {path: false, source: names[2]};
   paths.forEach((loc, index) => {
-    let checkPath = path.resolve(loc + item)
+    let checkPath = path.resolve(loc + item);
     if (exists(checkPath)) {
-      ret = {path: checkPath, source: names[index]}
+      ret = {path: checkPath, source: names[index]};
     }
-  })
-  return ret
+  });
+  return ret;
 }
 
 // Safely attempt something, can also call something when done...
@@ -42,7 +42,7 @@ function tryIt (fn, cb) {
 
 // Returns true if the main module (index), otherwise returns false (you're in node_modules)
 function main() {
-  return global.isMain
+  return global.isMain;
 }
 
 // Returns the path of the root project folder
@@ -51,21 +51,21 @@ function root() {
 }
 
 function removePreceeding(str, match) {
-  if (str.charAt(0) === match) str = str.substr(1)
-  if (str.charAt(0) === match) str = removePreceeding(str, match)
-  return str
+  if (str.charAt(0) === match) str = str.substr(1);
+  if (str.charAt(0) === match) str = removePreceeding(str, match);
+  return str;
 }
 
 // Returns package.json from the root project if it exists.
 function pjson(loc) {
   // If we're the module (developing)
-  if (main()) loc = true
+  if (main()) loc = true;
   let rootLoc = loc ? __dirname + './../../' : root();
   var contents = fs.readFileSync(rootLoc + '/package.json');  
   if (contents) {
     contents = JSON.parse(contents);
   }
-  return contents || {}
+  return contents || {};
 }
 
 module.exports = {

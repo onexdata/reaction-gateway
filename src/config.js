@@ -1,11 +1,18 @@
-const util = require('./inc/util')
+const util = require('./inc/util');
 module.exports = {
   // Your application defaults...
   app: {
     name: util.pjson().name,
     version: util.pjson().version,
   },
+  secrets: {
+    auth: {
+      secret: 'changeThis!'
+    }
+  },
   server: {
+    // You can watch the internals
+    debug: 'reactor:*',
     // You can over-ride this if you want to hide which gateway you're running.
     name: 'Reactor',
     // You can over-ride this if you want to as well.
@@ -13,7 +20,10 @@ module.exports = {
     // By default, will try port 8000 and use the next available, override here.
     port: { from: 8000, to: 8999 },
     // You can override the logo as well. Use a string or a script that exports a string.
-    logo: require('./inc/logo'),
+    branding: {
+      logo: require('./inc/logo'),
+      color: 'yellow'
+    },
     // Where the data from services comes from.
     persistence: 'demo'
   },
@@ -28,13 +38,16 @@ module.exports = {
       },
       base: {
         // The base.folder can let you host things like /src/legacy-services/v1 etc.
-          // Note that /services/ will check /services (root of your project) OR /src/services/
-          folder: '/services/',
+        // Note that /services/ will check /services (root of your project) OR /src/services/
+        folder: '/services/',
         // The base.endpoint can let you prepend your service with things like /api/v2/ etc.
         mount: '/'
       }
     },
     definitions: {
+      users: {
+
+      },
       status: {
         base: {
           // This is where you would redefine the base mount point for an individual service...
@@ -80,4 +93,4 @@ module.exports = {
       }
     }
   }
-}
+};

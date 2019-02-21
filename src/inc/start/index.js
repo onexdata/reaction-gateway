@@ -1,4 +1,5 @@
-const util = require('./../util')
+const util = require('./../util');
+const chalk = require('chalk');
 
 module.exports = function ( config ) {
 
@@ -8,7 +9,7 @@ module.exports = function ( config ) {
   
   const debug = require('debug')('reactor:start');
   debug('Booting...');
-  const {app, express, socketio} = require('./server')(config);
+  const {app, express, socketio, memory, authentication} = require('./server')(config);
   
   // Make config available to services via context.app.get('config')
   app.set('config', config);
@@ -20,47 +21,60 @@ module.exports = function ( config ) {
 
   // Log any aspects present...
   let aspects = ['before', 'after', 'error'];
-  let aspectsFound = []
+  let aspectsFound = [];
   aspects.forEach(aspect => {
-    let aspectPath = util.resolve(util.root() + `/src/aspects/${aspect}.js`)
+    let aspectPath = util.resolve(util.root() + `/src/aspects/${aspect}.js`);
     if (util.exists(aspectPath)) {
-      aspectsFound.push(aspect)
+      aspectsFound.push(aspect);
     } 
   });
   if (aspectsFound.length) {
-    console.log(`Found ${aspectsFound.length} aspect(s):`, aspectsFound)
+    console.log(`Found ${aspectsFound.length} aspect(s):`, aspectsFound);
   } else {
-    console.log(`No aspects present`)
+    console.log('No aspects present');
   }
   
 
   // Load the service loader...
   const loadService = require('./service')(config, app, data);
   var services = {};
+  debug('loading services');
 
   // Setup each enabled service...
   let definitions = config.reactor.services.definitions;
   Object.keys(definitions).forEach(name => {
     let service = definitions[name];
+    debug('Loading service', name);
     services[name] = loadService(name, service);
+    if (name === 'users') {
+      debug('Existing user service found.');
+      console.log(chalk.yellow('User service connected.'));
+    }
   });
   debug('Services loaded.');
+
+  // Now load the authentication service...
+  app.use('/users', memory())
+    .configure(authentication.auth({ secret: config.reactor.secrets.auth }))
+    .configure(authentication.local())
+    .configure(authentication.jwt());
+
 
   app.use(express.errorHandler());
 
 
-  const ports = { from: 0, to: 0 }
+  const ports = { from: 0, to: 0 };
 
   // Log that we're about to start listening...
   if (Number.isInteger(config.reactor.server.port)) {
-    debug('Trying port', config.reactor.server.port)
-    ports.from = config.reactor.server.port
-    ports.to = config.reactor.server.port
+    debug('Trying port', config.reactor.server.port);
+    ports.from = config.reactor.server.port;
+    ports.to = config.reactor.server.port;
 
   } else {
-    ports.from = config.reactor.server.port.from
-    ports.to = config.reactor.server.port.to
-    debug(`Finding free port between ${ports.from} and ${ports.to}`)
+    ports.from = config.reactor.server.port.from;
+    ports.to = config.reactor.server.port.to;
+    debug(`Finding free port between ${ports.from} and ${ports.to}`);
   }
 
   // Start listening...
@@ -70,11 +84,12 @@ module.exports = function ( config ) {
     stopPort: ports.to
   }, (err, port) => {
     if (err) {
-      console.log('Unable to get a free port.  Please change your settings.')
-      console.log('https://github.com/onexdata/reaction-gateway#config-options')
-      console.log('Your current port settings are:', config.reactor.server.port)
+      console.log('Unable to get a free port.  Please change your settings.');
+      console.log('https://github.com/onexdata/reaction-gateway#config-options');
+      console.log('Your current port settings are:', config.reactor.server.port);
       process.exit(-1);
     }
+    debug('About to listen');
     app.listen(port);
     console.log(`Listening on ${port}`);
   });
