@@ -1,7 +1,7 @@
 {
   "name": "@acter/gateway",
   "description": "Acter API Gateway",
-  "version": "0.6.1",
+  "version": "0.6.2",
   "main": "src",
   "keywords": [
     "gateway"
@@ -11,7 +11,7 @@
     "email": "njsteele@gmail.com"
   },
   "engines": {
-    "node": "^8.0.0",
+    "node": ">= 8.0.0",
     "npm": ">= 3.0.0"
   },
   "repository": {
