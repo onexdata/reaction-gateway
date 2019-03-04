@@ -79,12 +79,11 @@ module.exports = {
   anyExists: anyExists,
   join: path.join,
   basename: path.basename,
-  resolve: path.resolve,
   pjson: pjson,
   removePreceeding: removePreceeding,
   watch: require('chokidar').watch,
-  resolve: (name) => path.join(root(), name),
-  fileName: (name) => path.parse(name).name,
-  fileExt: (name) => path.parse(name).ext,
+  resolve: name => path.join(root(), name),
+  fileName: name => path.parse(name).name,
+  fileExt: name => path.parse(name).ext,
   logo: () => { console.log('Acter'); }
 };

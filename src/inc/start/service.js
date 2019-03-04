@@ -100,7 +100,7 @@ module.exports = (config, app, persistence) => {
       let hooks = {};
       let aspects = ['before', 'after', 'error'];
       aspects.forEach(aspect => {
-        let path = util.resolve(util.root() + `/src/aspects/${aspect}.js`);
+        let path = util.resolve(`src/aspects/${aspect}.js`);
         if (util.exists(path)) hooks[aspect] = require(path);
       });
       

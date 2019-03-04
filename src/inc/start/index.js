@@ -3,14 +3,22 @@ const chalk = require('chalk');
 
 module.exports = function ( config ) {
 
+  // configure the logging ASAP...
+  var exLog = console.log;
+  console.log = function() {
+    let timestamp = new Date().toISOString()
+    Array.prototype.unshift.call(arguments, timestamp);
+    exLog.apply(this, arguments);
+  }
+
   // Output the software names and versions...
   console.log(`${config.reactor.server.name} v${config.reactor.server.version}`,
     `running ${config.reactor.app.name} v${config.reactor.app.version}`);
-  
+
   const debug = require('debug')('acter:start');
   debug('Booting...');
   const {app, express, socketio, memory, authentication} = require('./server')(config);
-  
+
   // Make config available to services via context.app.get('config')
   app.set('config', config);
   debug('Server loaded.');
@@ -23,7 +31,7 @@ module.exports = function ( config ) {
   let aspects = ['before', 'after', 'error'];
   let aspectsFound = [];
   aspects.forEach(aspect => {
-    let aspectPath = util.resolve(util.root() + `/src/aspects/${aspect}.js`);
+    let aspectPath = util.resolve(`src/aspects/${aspect}.js`);
     if (util.exists(aspectPath)) {
       aspectsFound.push(aspect);
     } 
@@ -51,7 +59,7 @@ module.exports = function ( config ) {
       watcher = util.watch(folder)
       if (util.exists(report) || util.exists(report + '/index.js')) {
         console.log(`Watching ${folder} for changes and telling ${report}.`)
-        require(report)({app, watcher, config})
+        require(report)({app, watcher, config, util})
       } else {
         console.log(`Watch report source code (${report}) does not exist!`)
       }
