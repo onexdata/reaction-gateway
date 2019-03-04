@@ -35,11 +35,29 @@ module.exports = function ( config ) {
   }
   
   // See if we're hosting statics...
-  if (config.reactor.server.statics.host === true) {
-    const statics = config.reactor.server.statics
-    const folder = util.resolve(statics.folder)
+  if (config.reactor.server.statics.active === true) {
+    let statics = config.reactor.server.statics
+    let folder = util.resolve(statics.folder)
     console.log(`Hosting static files at ${statics.endpoint} from ${folder}`)
     app.use(statics.endpoint, express.static(folder))
+  }
+
+  // See if we're watching something...
+  if (config.reactor.server.watch.active === true) {
+    let watch = config.reactor.server.watch
+    let folder = watch.folder
+    let report = util.resolve(watch.report)
+    if (util.exists(folder)) {
+      watcher = util.watch(folder)
+      if (util.exists(report) || util.exists(report + '/index.js')) {
+        console.log(`Watching ${folder} for changes and telling ${report}.`)
+        require(report)({app, watcher, config})
+      } else {
+        console.log(`Watch report source code (${report}) does not exist!`)
+      }
+    } else {
+      console.log(`Can't find the folder to watch: "${folder}". Please create it or change config.`)
+    }
   }
 
   // Load the service loader...

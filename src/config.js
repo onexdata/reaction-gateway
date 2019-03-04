@@ -26,9 +26,13 @@ module.exports = {
     },
     // Whether or not to host static files and where...
     statics: {
-      host: false,
+      active: false,
       folder: 'statics',
       endpoint: '/remote'
+    },
+    // If a folder should be watched, send it to report...
+    watch: {
+      active: false
     },
     // Where the data from services comes from.
     persistence: 'demo'

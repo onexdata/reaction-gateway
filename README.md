@@ -102,9 +102,66 @@ module.exports = {
     }
   }
 }
-`
+```
 
-### Config options
+## Config options
+
+### server.statics
+The gateway can automatically host static files (like Apache/nginx, although simpler) :). Express is under the hood here.
+**Default**
+```{ active: false, folder: 'statics, endpoint: '/remote }```
+**active**: True if you want to host static resources (like index.html).
+**folder**: The relative path to the folder you want to host.
+**endpoint**: The endpoint you want to serve the static files out of. '/' for root, but will mess with your services.
+
+
+### server.watch
+The gateway can automatically watch folders and send results to a report script you specify.
+**Default**
+```{ active: false, folder: undefined, report: undefined }```
+**active**: True if you want to watch a folder.
+**folder**: The full path to the folder you want to watch.
+**report**: A script that will recieve reports on your watched folder.
+
+#### Report script.
+Your report script path is relative and can recieve app, watcher and config.  app & config are
+defined elsewhere. watcher is an event bus that will contain the following events:
+* ready: You get this event when all the structure in the watched folder have been reported.
+* add: Triggered when a file is added to a watched folder.
+* unlink: Triggered when a file is removed from a watched folder.
+* addDir: Triggered when a folder is added to a watched folder.
+* unlinkDir: Triggered when a folder is removed from a watched folder.
+* error: Triggered when something goes wrong.
+
+All events will contain a path except for **ready**, which will contain nothing, and **error**, which will contain the error object.
+
+**NOTE:** The Windows OS will report an error when watching am unlinkedDir, node does not account for this (as of 3/1/2019). If
+you want to watch unlinkedDir on windows, add a trigger for error and handle it like so...
+```
+        watcher.on('error', error => {
+            // Ignore EPERM errors in windows, which happen if you delete folders...
+            if (error.code === 'EPERM' && require('os').platform() === 'win32') return 
+            console.log(error)
+        })
+```
+
+This issue does not exist on Mac/Linux.
+
+**Example watch report script...**
+```
+module.exports = ({app, watcher, config}) => {
+    watcher.on('ready', async () => {
+        // foo = the result of the status service...
+        const foo = await app.services.status.find()
+        // Can watch these events too: add, unlink, addDir, unlinkDir, error
+        watcher.on('add', path => {
+            console.log('Processing new file:', path)
+        })
+    })    
+}
+```
+
+
 
 #### server.port
 **Default**
@@ -121,4 +178,3 @@ available using config.server.port
 ### Entry point
 You start at src/index.js
 The logo is drawn, configuration is loaded, and the platform is started.
-```
