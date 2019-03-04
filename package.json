@@ -1,7 +1,7 @@
 {
   "name": "@acter/gateway",
   "description": "Acter API Gateway",
-  "version": "0.6.6",
+  "version": "0.6.7",
   "main": "src",
   "keywords": [
     "gateway"
@@ -46,6 +46,7 @@
     "body-parser": "^1.18.3",
     "chalk": "^2.4.2",
     "check-disk-space": "^1.5.0",
+    "chokidar": "^2.1.2",
     "config": "^2.0.1",
     "debug": "^4.1.1",
     "feathers-memory": "^3.0.2",
