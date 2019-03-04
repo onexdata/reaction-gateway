@@ -82,7 +82,8 @@ module.exports = {
   resolve: path.resolve,
   pjson: pjson,
   removePreceeding: removePreceeding,
+  resolve: (name) => path.join(root(), name),
   fileName: (name) => path.parse(name).name,
   fileExt: (name) => path.parse(name).ext,
-  logo: () => { console.log('Transactor'); }
+  logo: () => { console.log('Acter'); }
 };

@@ -42,6 +42,12 @@ module.exports = {
     logo: require('./inc/logo'),
     // Where the data from services comes from.
     persistence: 'sqllite://root:root@default.sqllite'
+    // If we're hosting static files or not.
+    statics: {
+      host: false,
+      endpoint: '/remote'.
+      folder: 'statics' // The root of your source file + /statics
+    }
   },
   services: {
     defaults: {

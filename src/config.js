@@ -24,6 +24,12 @@ module.exports = {
       logo: require('./inc/logo'),
       color: 'yellow'
     },
+    // Whether or not to host static files and where...
+    statics: {
+      host: false,
+      folder: 'statics',
+      endpoint: '/remote'
+    },
     // Where the data from services comes from.
     persistence: 'demo'
   },

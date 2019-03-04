@@ -34,6 +34,13 @@ module.exports = function ( config ) {
     console.log('No aspects present');
   }
   
+  // See if we're hosting statics...
+  if (config.reactor.server.statics.host === true) {
+    const statics = config.reactor.server.statics
+    const folder = util.resolve(statics.folder)
+    console.log(`Hosting static files at ${statics.endpoint} from ${folder}`)
+    app.use(statics.endpoint, express.static(folder))
+  }
 
   // Load the service loader...
   const loadService = require('./service')(config, app, data);
@@ -61,9 +68,7 @@ module.exports = function ( config ) {
     .configure(authentication.local())
     .configure(authentication.jwt());
 
-
   app.use(express.errorHandler());
-
 
   const ports = { from: 0, to: 0 };
 
