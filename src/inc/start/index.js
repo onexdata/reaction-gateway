@@ -1,15 +1,15 @@
 const util = require('./../util');
-const chalk = require('chalk');
+// const chalk = require('chalk');
 
 module.exports = function ( config ) {
 
   // configure the logging ASAP...
   var exLog = console.log;
   console.log = function() {
-    let timestamp = new Date().toISOString()
+    let timestamp = new Date().toISOString();
     Array.prototype.unshift.call(arguments, timestamp);
     exLog.apply(this, arguments);
-  }
+  };
 
   // Output the software names and versions...
   console.log(`${config.reactor.server.name} v${config.reactor.server.version}`,
@@ -17,7 +17,8 @@ module.exports = function ( config ) {
 
   const debug = require('debug')('acter:start');
   debug('Booting...');
-  const {app, express, socketio, memory, authentication} = require('./server')(config);
+  // const {app, express, socketio, memory, authentication} = require('./server')(config);
+  const {app, express, authentication} = require('./server')(config);
 
   // Make config available to services via context.app.get('config')
   app.set('config', config);
@@ -44,27 +45,27 @@ module.exports = function ( config ) {
   
   // See if we're hosting statics...
   if (config.reactor.server.statics.active === true) {
-    let statics = config.reactor.server.statics
-    let folder = util.resolve(statics.folder)
-    console.log(`Hosting static files at ${statics.endpoint} from ${folder}`)
-    app.use(statics.endpoint, express.static(folder))
+    let statics = config.reactor.server.statics;
+    let folder = util.resolve(statics.folder);
+    console.log(`Hosting static files at ${statics.endpoint} from ${folder}`);
+    app.use(statics.endpoint, express.static(folder));
   }
 
   // See if we're watching something...
   if (config.reactor.server.watch.active === true) {
-    let watch = config.reactor.server.watch
-    let folder = watch.folder
-    let report = util.resolve(watch.report)
+    let watch = config.reactor.server.watch;
+    let folder = watch.folder;
+    let report = util.resolve(watch.report);
     if (util.exists(folder)) {
-      watcher = util.watch(folder)
+      let watcher = util.watch(folder);
       if (util.exists(report) || util.exists(report + '/index.js')) {
-        console.log(`Watching ${folder} for changes and telling ${report}.`)
-        require(report)({app, watcher, config, util})
+        console.log(`Watching ${folder} for changes and telling ${report}.`);
+        require(report)({app, watcher, config, util});
       } else {
-        console.log(`Watch report source code (${report}) does not exist!`)
+        console.log(`Watch report source code (${report}) does not exist!`);
       }
     } else {
-      console.log(`Can't find the folder to watch: "${folder}". Please create it or change config.`)
+      console.log(`Can't find watch folder: "${folder}". Please create it or change config.`);
     }
   }
 
@@ -84,11 +85,6 @@ module.exports = function ( config ) {
   });
   debug('Services loaded.');
 
-  // See if users have been defined...
-  if (!definedUsers) {
-    console.log('No users service has been defined, creating one in memory');
-    app.use('/users', memory());
-  }
   // Now load the authentication service...
   app.configure(authentication.auth({ secret: config.reactor.secrets.auth }))
     .configure(authentication.local())
@@ -110,6 +106,43 @@ module.exports = function ( config ) {
     debug(`Finding free port between ${ports.from} and ${ports.to}`);
   }
 
+  // Add the user to the authentication service (will only return the JWT otherwise)
+  app.service('authentication').hooks({
+    before: {
+      create: [
+        // You can chain multiple strategies
+        authentication.auth.hooks.authenticate(['jwt', 'local'])
+      ],
+      remove: [
+        authentication.auth.hooks.authenticate('jwt')
+      ]
+    },
+    after: {
+      create: [
+        (context) => {
+          context.result.user = context.params.user;
+          delete context.result.user.password;
+        }
+      ]
+    }
+  });
+
+  // See if users have been defined...
+  if (!definedUsers) {
+    console.log('Users must be defined. Creating them.');
+    loadService('users', { model: 'users', auto: true } );
+  }
+
+  // Make sure `password` never gets sent to the client
+  app.service('users').hooks({
+    after: authentication.local.hooks.protect('password'),
+    before: {
+      create: [
+        authentication.local.hooks.hashPassword()
+      ]
+    }
+  });
+  
   // Start listening...
   const portfinder = require('portfinder');
   portfinder.getPort({
