@@ -73,7 +73,7 @@ Configuration is a snap!
 Reactor comes with enough defaults so that you can just require it and be up and running.
 
 
-```
+```javascript
 module.exports = {
   server: {
     port: 3030, // By default, will try port 8000 and use the next available, override here.
