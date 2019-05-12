@@ -49,7 +49,7 @@ module.exports = {
       base: {
         // The base.folder can let you host things like /src/legacy-services/v1 etc.
         // Note that /services/ will check /services (root of your project) OR /src/services/
-        folder: '/services/',
+        folder: '/src/services/',
         // The base.endpoint can let you prepend your service with things like /api/v2/ etc.
         mount: '/'
       }
