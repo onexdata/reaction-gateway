@@ -18,7 +18,7 @@ module.exports = function ( config ) {
   const debug = require('debug')('acter:start');
   debug('Booting...');
   // const {app, express, socketio, memory, authentication} = require('./server')(config);
-  const {app, express, authentication} = require('./server')(config);
+  const {server, app, express, authentication} = require('./server')(config);
 
   // Make config available to services via context.app.get('config')
   app.set('config', config);
@@ -156,9 +156,10 @@ module.exports = function ( config ) {
       process.exit(-1);
     }
     debug('About to listen');
-    app.listen(port);
+    server.listen(port);
+    app.setup(server)
     console.log(`Listening on ${port}`);
   });
 
-  return {app, services};
+  return {server, app, services};
 };

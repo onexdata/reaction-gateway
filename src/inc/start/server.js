@@ -15,12 +15,34 @@ module.exports = (config) => {
   const local = require('@feathersjs/authentication-local');
   const jwt = require('@feathersjs/authentication-jwt');
   const memory = require('feathers-memory');
+  let server = null;
   debug('Setting up Express.');
 
   // Create an Express compatible Feathers application instance.
   const app = express(feathers());
 
+  // Allow HTTPS...
+  if (config.reactor.server.mode === 'https') {
+    console.log('HTTPS mode')
+    const protocol = require('https');
+    if (config.reactor.server.key && config.reactor.server.cert) {
+      const fs = require('fs')
+      server = protocol.createServer({
+        key: fs.readFileSync(config.reactor.server.key),
+        cert: fs.readFileSync(config.reactor.server.cert)    
+      }, app)  
+    } else {
+      console.log('You are trying to run in HTTPS mode without a privateKey and certificate! That will not work. Check your settings...\n', config)
+      process.exit()
+    }
+  } else {
+    console.log('HTTP mode')
+    const protocol = require('http');
+    server = protocol.createServer({}, app)
+  }
+
   // Enable REST services
+  const fs = require('fs')
   app.configure(express.rest())
     // Enable Socket.io services
     .configure(socketio())
@@ -30,5 +52,5 @@ module.exports = (config) => {
     .use(express.urlencoded({ extended: true }));
   debug('Complete.');
 
-  return {app, express, socketio, memory, authentication: { auth, local, jwt } };
+  return {server, app, express, socketio, memory, authentication: { auth, local, jwt } };
 };
