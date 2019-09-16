@@ -8,7 +8,7 @@
  */
 /* eslint-disable no-fallthrough */
 /* eslint-disable no-case-declarations */
-module.exports = (connectionURL) => {
+module.exports = async (connectionURL) => {
   const path = require('path');
 
   // Prepopulate the persistence layer with demo data if asking for a demo...
@@ -27,6 +27,9 @@ module.exports = (connectionURL) => {
     logging: false,
     operatorsAliases: false
   };
+
+  let DB = undefined;
+  let db = undefined;
   debug(`Attempting ${protocol} on ${ds.host}/${dbName}`);
   switch (protocol) {
   // Handle default sequelize supported protocols...
@@ -36,12 +39,24 @@ module.exports = (connectionURL) => {
   case 'mssql':
   case 'mysql':
   case 'mariadb':
-    const DB = require('sequelize');
-    const db = new DB(dbName, ds.username, ds.password, options);
+    DB = require('sequelize');
+    db = new DB(dbName, ds.username, ds.password, options);
     debug('Complete.');
     console.log(`Datasource is ${protocol} on ${ds.host}/${dbName}`);
-    return { DB, db, defaultService: require('feathers-sequelize') };
+    return new Promise((resolve, reject) => {
+      resolve({ DB, db, defaultService: require('feathers-sequelize'), nosql: false })
+    });
+  case 'mongodb':
+    debug('Connecting to mongo...')
+    DB = require('mongodb').MongoClient;
+    return new Promise((resolve, reject) => {
+      DB.connect(connectionURL, { useUnifiedTopology: true, useNewUrlParser: true }).then(client => {
+        db = client.db(dbName)
+        debug( 'Connected!')
+        resolve({ DB, db, defaultService: require('feathers-mongodb'), nosql: true })
+      });
+    });
   default:
-    throw new Error(`The database protocol ${protocol} is not supported. Is there an error in what you typed? (${connectionURL})`);
+    throw new Error(`The database protocol ${protocol}!!! is not supported. Is there an error in what you typed? (${connectionURL})`);
   }
 };

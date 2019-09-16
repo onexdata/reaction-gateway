@@ -14,12 +14,12 @@ const util = require('./../util');
 module.exports = (config, app, persistence) => {
 
   // Extract the data sources from the passed persistence object...
-  const {DB, db, defaultService} = persistence;
+  const {DB, db, defaultService, nosql} = persistence;
 
   // Return a function that takes a name and a service definition, returns a model (if any)...
   return (serviceName, service) => {
     let modelBasePath = '/src/models/';
-    let serviceBasePath = config.reactor.services.defaults.base.folder;
+    let serviceBasePath = config.acter.services.defaults.base.folder;
     let Model = {};
     if (service.options === undefined) service.options = {};
     if (!service.disabled) {
@@ -29,7 +29,7 @@ module.exports = (config, app, persistence) => {
 
       // Find the paths for model and service, and name the soruce...
       let sourcePaths = [__dirname + './../../../', util.root()];
-      let sourceNames = ['reactor source', 'app source', 'auto-generated'];
+      let sourceNames = ['acter source', 'app source', 'auto-generated'];
       let build = {
         // Will contain { path, source }
         model: service.model ?
@@ -41,7 +41,7 @@ module.exports = (config, app, persistence) => {
       };
 
       // Set the base endpoint for the service...
-      build.service.endpointBase = config.reactor.services.defaults.base.mount;
+      build.service.endpointBase = config.acter.services.defaults.base.mount;
       build.service.endpointBase = (service.base && service.base.mount) ? service.base.mount : build.service.endpointBase;
       build.service.mount = build.service.endpointBase + serviceName;
       
@@ -56,21 +56,26 @@ module.exports = (config, app, persistence) => {
 
       // If we're supposed to associate a model with it...
       if (service.model) {
-        if (!build.model.path) {
-          throw new Error(`\nThe service ${serviceName} uses model ${service.model} but the source for that model doesn't exist.\n\n`);
-        } 
-        build.model.module = require(build.model.path)(DB);
-        build.model.defaults = Object.create(service.options.model || config.reactor.services.defaults.model); 
-
-        Model = db.define(service.model, build.model.module, build.model.defaults);
-        debug(`Model ${service.model} sucessfully built`);
+        // Nosql databases don't need a model to be defined, they can generate their own...
+        if (nosql) {
+          Model = db.collection(service.model);
+        } else {
+          if (!build.model.path) {
+            throw new Error(`\nThe service ${serviceName} uses model ${service.model} but the source for that model doesn't exist.\n\n`);
+          }
+          build.model.module = require(build.model.path)(DB);
+          build.model.defaults = Object.create(service.options.model || config.acter.services.defaults.model); 
+  
+          Model = db.define(service.model, build.model.module, build.model.defaults);
+          debug(`Model ${service.model} sucessfully built`);
+        }
       }
       
       // Allow the service to automatically generate persistence interactions...
       if (service.auto) {
         app.use(build.service.mount, defaultService({
           Model: Model,
-          paginate: service.options.pagination || config.reactor.services.defaults.pagination
+          paginate: service.options.pagination || config.acter.services.defaults.pagination
         }));
       } else {
         // If we're not automatically generating the service, call it to generate itself...
@@ -84,7 +89,7 @@ module.exports = (config, app, persistence) => {
           try {
             build.service.module = require(build.service.path)(
               config,
-              config.reactor.services.definitions[serviceName].config,
+              config.acter.services.definitions[serviceName].config,
               defaultService
             );
             app.use(build.service.mount, build.service.module);
@@ -96,12 +101,12 @@ module.exports = (config, app, persistence) => {
         }
       }
 
-      // Attach additional hooks if aspects exist...
+      // Attach additional hooks if hooks exist...
       let hooks = {};
-      let aspects = ['before', 'after', 'error'];
-      aspects.forEach(aspect => {
-        let path = util.resolve(`src/aspects/${aspect}.js`);
-        if (util.exists(path)) hooks[aspect] = require(path);
+      let possibleHooks = ['before', 'after', 'error'];
+      possibleHooks.forEach(hook => {
+        let path = util.resolve(`src/hooks/${hook}.js`);
+        if (util.exists(path)) hooks[hook] = require(path);
       });
       
       // Try to add hooks to the built service...

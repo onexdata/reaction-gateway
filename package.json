@@ -1,7 +1,7 @@
 {
   "name": "@acter/gateway",
   "description": "Acter API Gateway",
-  "version": "0.7.1",
+  "version": "0.7.7",
   "main": "src",
   "keywords": [
     "gateway"
@@ -54,6 +54,8 @@
     "feathers-sequelize": "^3.1.3",
     "feathers-socketio": "^2.0.1",
     "mysql2": "^1.6.1",
+    "feathers-mongodb": "^5.0.0",
+    "mongodb": "^3.3.2",
     "os-utils": "0.0.14",
     "portfinder": "^1.0.19",
     "sequelize": "^4.38.0",

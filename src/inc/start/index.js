@@ -1,7 +1,7 @@
 const util = require('./../util');
 // const chalk = require('chalk');
 
-module.exports = function ( config ) {
+module.exports = async function ( config ) {
 
   // configure the logging ASAP...
   var exLog = console.log;
@@ -12,8 +12,8 @@ module.exports = function ( config ) {
   };
 
   // Output the software names and versions...
-  console.log(`${config.reactor.server.name} v${config.reactor.server.version}`,
-    `running ${config.reactor.app.name} v${config.reactor.app.version}`);
+  console.log(`${config.acter.server.name} v${config.acter.server.version}`,
+    `running ${config.acter.app.name} v${config.acter.app.version}`);
 
   const debug = require('debug')('acter:start');
   debug('Booting...');
@@ -25,35 +25,35 @@ module.exports = function ( config ) {
   debug('Server loaded.');
 
   // Load the main persistence connection...
-  const data = require('./persistence')(config.reactor.server.persistence);
+  const data = await require('./persistence')(config.acter.server.persistence);
   debug('Persistence loaded.');
 
-  // Log any aspects present...
-  let aspects = ['before', 'after', 'error'];
-  let aspectsFound = [];
-  aspects.forEach(aspect => {
-    let aspectPath = util.resolve(`src/aspects/${aspect}.js`);
+  // Log any hooks present...
+  let hooks = ['before', 'after', 'error'];
+  let hooksFound = [];
+  hooks.forEach(aspect => {
+    let aspectPath = util.resolve(`src/hooks/${aspect}.js`);
     if (util.exists(aspectPath)) {
-      aspectsFound.push(aspect);
+      hooksFound.push(aspect);
     } 
   });
-  if (aspectsFound.length) {
-    console.log(`Found ${aspectsFound.length} aspect(s):`, aspectsFound);
+  if (hooksFound.length) {
+    console.log(`Found ${hooksFound.length} hook(s):`, hooksFound);
   } else {
-    console.log('No aspects present');
+    console.log('No hooks present');
   }
   
   // See if we're hosting statics...
-  if (config.reactor.server.statics.active === true) {
-    let statics = config.reactor.server.statics;
+  if (config.acter.server.statics.active === true) {
+    let statics = config.acter.server.statics;
     let folder = util.resolve(statics.folder);
     console.log(`Hosting static files at ${statics.endpoint} from ${folder}`);
     app.use(statics.endpoint, express.static(folder));
   }
 
   // See if we're watching something...
-  if (config.reactor.server.watch.active === true) {
-    let watch = config.reactor.server.watch;
+  if (config.acter.server.watch.active === true) {
+    let watch = config.acter.server.watch;
     let folder = watch.folder;
     let report = util.resolve(watch.report);
     if (util.exists(folder)) {
@@ -75,7 +75,7 @@ module.exports = function ( config ) {
   debug('loading services');
 
   // Setup each enabled service...
-  let definitions = config.reactor.services.definitions;
+  let definitions = config.acter.services.definitions;
   let definedUsers = false;
   Object.keys(definitions).forEach(name => {
     let service = definitions[name];
@@ -86,7 +86,7 @@ module.exports = function ( config ) {
   debug('Services loaded.');
 
   // Now load the authentication service...
-  app.configure(authentication.auth({ secret: config.reactor.secrets.auth }))
+  app.configure(authentication.auth({ secret: config.acter.secrets.auth }))
     .configure(authentication.local())
     .configure(authentication.jwt());
 
@@ -95,14 +95,14 @@ module.exports = function ( config ) {
   const ports = { from: 0, to: 0 };
 
   // Log that we're about to start listening...
-  if (Number.isInteger(config.reactor.server.port)) {
-    debug('Trying port', config.reactor.server.port);
-    ports.from = config.reactor.server.port;
-    ports.to = config.reactor.server.port;
+  if (Number.isInteger(config.acter.server.port)) {
+    debug('Trying port', config.acter.server.port);
+    ports.from = config.acter.server.port;
+    ports.to = config.acter.server.port;
 
   } else {
-    ports.from = config.reactor.server.port.from;
-    ports.to = config.reactor.server.port.to;
+    ports.from = config.acter.server.port.from;
+    ports.to = config.acter.server.port.to;
     debug(`Finding free port between ${ports.from} and ${ports.to}`);
   }
 
@@ -152,7 +152,7 @@ module.exports = function ( config ) {
     if (err) {
       console.log('Unable to get a free port.  Please change your settings.');
       console.log('https://github.com/onexdata/reaction-gateway#config-options');
-      console.log('Your current port settings are:', config.reactor.server.port);
+      console.log('Your current port settings are:', config.acter.server.port);
       process.exit(-1);
     }
     debug('About to listen');

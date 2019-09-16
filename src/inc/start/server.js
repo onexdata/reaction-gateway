@@ -22,14 +22,14 @@ module.exports = (config) => {
   const app = express(feathers());
 
   // Allow HTTPS...
-  if (config.reactor.server.mode === 'https') {
+  if (config.acter.server.mode === 'https') {
     console.log('HTTPS mode')
     const protocol = require('https');
-    if (config.reactor.server.key && config.reactor.server.cert) {
+    if (config.acter.server.key && config.acter.server.cert) {
       const fs = require('fs')
       server = protocol.createServer({
-        key: fs.readFileSync(config.reactor.server.key),
-        cert: fs.readFileSync(config.reactor.server.cert)    
+        key: fs.readFileSync(config.acter.server.key),
+        cert: fs.readFileSync(config.acter.server.cert)    
       }, app)  
     } else {
       console.log('You are trying to run in HTTPS mode without a privateKey and certificate! That will not work. Check your settings...\n', config)

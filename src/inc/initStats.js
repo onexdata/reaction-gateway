@@ -1,7 +1,7 @@
 const os = require('os');
 const config = require('config');
 
-let statConfig = config.reactor.services.definitions.status.config;
+let statConfig = config.acter.services.definitions.status.config;
 var interval = statConfig.history.interval;
 var seconds = statConfig.history.count;
 

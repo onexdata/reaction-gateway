@@ -25,11 +25,11 @@ module.exports = function ( appConfig, config = {show:{}}, persistence ) {
       // Mode
       if (config.show.mode) status.process.mode = 'n/a';
       // App details
-      if (config.show.app) status.process.app = appConfig.reactor.app;
+      if (config.show.app) status.process.app = appConfig.acter.app;
       // server details
       if (config.show.gateway) status.process.gateway = {
-        name: appConfig.reactor.server.name,
-        version: appConfig.reactor.server.version,
+        name: appConfig.acter.server.name,
+        version: appConfig.acter.server.version,
       }
       // Config
       if (config.show.config) status.process.config = appConfig;
