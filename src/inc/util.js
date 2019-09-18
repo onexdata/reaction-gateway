@@ -42,7 +42,7 @@ function tryIt (fn, cb) {
 
 // Returns true if the main module (index), otherwise returns false (you're in node_modules)
 function main() {
-  return global.isMain;
+  return global.isMain || false;
 }
 
 // Returns the path of the root project folder

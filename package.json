@@ -4,8 +4,10 @@
   "version": "0.7.7",
   "main": "src",
   "scripts": {
-    "test": "npm run eslint && npm run mocha",
-    "eslint": "eslint src/. test/. --config .eslintrc.json --fix",
+    "lint": "eslint src/**",
+    "test": "jest",
+    "coverage": "jest --collectCoverageFrom=src/**.js --coverage src",
+    "eslint": "eslint src/** test/** --fix",
     "dev": "nodemon src/",
     "start": "node src/"
   },
@@ -38,7 +40,9 @@
   },
   "devDependencies": {
     "eslint": "^6.4.0",
-    "nodemon": "^1.19.2"
+    "nodemon": "^1.19.2",
+    "jest": "24.9.0",
+    "eslint-plugin-jest": "22.17.0"
   },
   "keywords": [
     "gateway"

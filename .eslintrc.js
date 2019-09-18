@@ -1,8 +1,9 @@
-{
+module.exports = {
+  "plugins": ["jest"],
   "env": {
     "es6": true,
     "node": true,
-    "mocha": true
+    "jest": true
   },
   "parserOptions": {
     "ecmaVersion": 2017
@@ -25,8 +26,11 @@
       "single"
     ],
     "semi": [
+      "off"
+    ],
+    "comma-dangle": [
       "error",
-      "always"
+      "always-multiline"
     ]
   }
 }
