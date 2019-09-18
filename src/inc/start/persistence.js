@@ -9,7 +9,6 @@
 /* eslint-disable no-fallthrough */
 /* eslint-disable no-case-declarations */
 module.exports = async (connectionURL) => {
-  const path = require('path');
 
   // Prepopulate the persistence layer with demo data if asking for a demo...
   if (connectionURL === 'demo') {
@@ -43,17 +42,17 @@ module.exports = async (connectionURL) => {
     db = new DB(dbName, ds.username, ds.password, options);
     debug('Complete.');
     console.log(`Datasource is ${protocol} on ${ds.host}/${dbName}`);
-    return new Promise((resolve, reject) => {
-      resolve({ DB, db, defaultService: require('feathers-sequelize'), nosql: false })
+    return new Promise((resolve) => {
+      resolve({ DB, db, defaultService: require('feathers-sequelize'), nosql: false });
     });
   case 'mongodb':
-    debug('Connecting to mongo...')
+    debug('Connecting to mongo...');
     DB = require('mongodb').MongoClient;
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       DB.connect(connectionURL, { useUnifiedTopology: true, useNewUrlParser: true }).then(client => {
-        db = client.db(dbName)
-        debug( 'Connected!')
-        resolve({ DB, db, defaultService: require('feathers-mongodb'), nosql: true })
+        db = client.db(dbName);
+        debug( 'Connected!');
+        resolve({ DB, db, defaultService: require('feathers-mongodb'), nosql: true });
       });
     });
   default:
