@@ -33,7 +33,8 @@
     "os-utils": "0.0.14",
     "portfinder": "^1.0.19",
     "sequelize": "^4.38.0",
-    "sqlite3": "^4.0.2"
+    "sqlite3": "^4.0.2",
+    "lodash": "^4.17.15"
   },
   "devDependencies": {
     "eslint": "^6.4.0",
