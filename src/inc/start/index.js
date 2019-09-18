@@ -1,7 +1,6 @@
-const util = require('./../util');
-// const chalk = require('chalk');
+module.exports = async function ( core ) {
 
-module.exports = async function ( config ) {
+  const { config, util } = core
 
   // configure the logging ASAP...
   var exLog = console.log;
@@ -17,15 +16,15 @@ module.exports = async function ( config ) {
 
   const debug = require('debug')('acter:start');
   debug('Booting...');
-  // const {app, express, socketio, memory, authentication} = require('./server')(config);
-  const {server, app, express, authentication} = require('./server')(config);
+
+  const {server, app, express, authentication} = require('./server')(core);
 
   // Make config available to services via context.app.get('config')
   app.set('config', config);
   debug('Server loaded.');
 
   // Load the main persistence connection...
-  const data = await require('./persistence')(config.acter.server.persistence);
+  const data = await require('./persistence')(core);
   debug('Persistence loaded.');
 
   // Log any hooks present...
@@ -147,7 +146,7 @@ module.exports = async function ( config ) {
   const portfinder = require('portfinder');
   portfinder.getPort({
     port: ports.from,
-    stopPort: ports.to
+    stopPort: ports.to,
   }, (err, port) => {
     if (err) {
       console.log('Unable to get a free port.  Please change your settings.');

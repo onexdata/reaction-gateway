@@ -5,7 +5,8 @@
  * @param {*} config - The application config
  * 
  */
-module.exports = (config) => {
+module.exports = (core) => {
+  const { config } = core
   const debug = require('debug')('acter:start:initServer');
   debug('Requiring core libraries.');
   const feathers = require('@feathersjs/feathers');

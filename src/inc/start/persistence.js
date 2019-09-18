@@ -8,11 +8,16 @@
  */
 /* eslint-disable no-fallthrough */
 /* eslint-disable no-case-declarations */
-module.exports = async (connectionURL) => {
-
+module.exports = async (core) => {
+  const { config, util } = core
+  let connectionURL = config.acter.server.persistence
   // Prepopulate the persistence layer with demo data if asking for a demo...
   if (connectionURL === 'demo') {
-    connectionURL = 'sqlite://localhost/node_modules/reaction-gateway/demo.sqlite';
+    if (util.main()) {
+      connectionURL = 'sqlite://localhost/demo.sqlite';
+    } else {
+      connectionURL = 'sqlite://localhost/node_modules/@acter/gateway/demo.sqlite';
+    }
   }
 
   const debug = require('debug')('acter:start:initPersistence');
@@ -56,6 +61,6 @@ module.exports = async (connectionURL) => {
       });
     });
   default:
-    throw new Error(`The database protocol ${protocol}!!! is not supported. Is there an error in what you typed? (${connectionURL})`);
+    throw new Error(`The database protocol ${protocol} is not supported. Is there an error in what you typed? (${connectionURL})`);
   }
 };

@@ -1,7 +1,7 @@
 {
   "name": "@acter/gateway",
   "description": "Acter API Gateway",
-  "version": "0.7.7",
+  "version": "0.7.8",
   "main": "src",
   "scripts": {
     "lint": "eslint src/** test/** --fix",

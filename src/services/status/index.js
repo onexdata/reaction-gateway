@@ -1,4 +1,4 @@
-const {disk, stats} = require('../../inc/initStats');
+const {disk, stats} = require('./initStats');
 const errorHistory = require('../../inc/initErrorTracking');
 const debug = require('debug')('acter:service:status');
 const os = require('os');
@@ -86,8 +86,7 @@ module.exports = function ( appConfig, config = {show:{}}, persistence ) {
         }
         status.system.disk = diskCache;
       }
-
-
+      console.log(status)
       return status;
     },
     // Return specific status about the server...

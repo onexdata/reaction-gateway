@@ -57,8 +57,7 @@ function simplifyStats(stat) {
   var total 	= endTotal - startTotal;
   var perc	= idle / total;
     
-  var systemCPU = (1-perc) * 100;
-  //console.log(systemCPU)
+  var systemCPU = (1 - perc) * 100;
   lastCPU = os.cpus();
 
   return {
@@ -76,7 +75,6 @@ function simplifyStats(stat) {
 var stats = []; // Stores the last X seconds of stats in detail.
 var statsSimple = []; // Stores the last X seconds of stats.
 var lastCPU = os.cpus();
-var cpuStart = { user: 0, nice: 0, sys: 0, irq: 0, idle: 0 };
 
 setInterval(() => {
   statsSimple.unshift(simplifyStats(stats[0]));
@@ -102,5 +100,5 @@ const getDisk = async function(lastDisk, seconds) {
 
 module.exports = {
   disk: getDisk,
-  stats: statsSimple
+  stats: statsSimple,
 };
