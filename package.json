@@ -4,10 +4,8 @@
   "version": "0.7.7",
   "main": "src",
   "scripts": {
-    "lint": "eslint src/**",
+    "lint": "eslint src/** test/** --fix",
     "test": "jest",
-    "coverage": "jest --collectCoverageFrom=src/**.js --coverage src",
-    "eslint": "eslint src/** test/** --fix",
     "dev": "nodemon src/",
     "start": "node src/"
   },
