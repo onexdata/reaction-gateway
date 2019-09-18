@@ -85,5 +85,4 @@ module.exports = {
   resolve: name => path.join(root(), name),
   fileName: name => path.parse(name).name,
   fileExt: name => path.parse(name).ext,
-  logo: () => { console.log('Acter'); }
 };
