@@ -23,26 +23,25 @@ module.exports = (config) => {
 
   // Allow HTTPS...
   if (config.acter.server.mode === 'https') {
-    console.log('HTTPS mode')
+    console.log('HTTPS mode');
     const protocol = require('https');
     if (config.acter.server.key && config.acter.server.cert) {
-      const fs = require('fs')
+      const fs = require('fs');
       server = protocol.createServer({
         key: fs.readFileSync(config.acter.server.key),
         cert: fs.readFileSync(config.acter.server.cert)    
-      }, app)  
+      }, app);
     } else {
-      console.log('You are trying to run in HTTPS mode without a privateKey and certificate! That will not work. Check your settings...\n', config)
-      process.exit()
+      console.log('You are trying to run in HTTPS mode without a privateKey and certificate! That will not work. Check your settings...\n', config);
+      process.exit();
     }
   } else {
-    console.log('HTTP mode')
+    console.log('HTTP mode');
     const protocol = require('http');
-    server = protocol.createServer({}, app)
+    server = protocol.createServer({}, app);
   }
 
   // Enable REST services
-  const fs = require('fs')
   app.configure(express.rest())
     // Enable Socket.io services
     .configure(socketio())
