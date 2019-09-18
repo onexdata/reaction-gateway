@@ -1,4 +1,4 @@
-const util = require('./inc/util');
+const util = require('./inc/util')
 module.exports = {
   // Your application defaults...
   app: {
@@ -7,8 +7,8 @@ module.exports = {
   },
   secrets: {
     auth: {
-      secret: 'changeThis!'
-    }
+      secret: 'changeThis!',
+    },
   },
   server: {
     // You can watch the internals
@@ -22,36 +22,36 @@ module.exports = {
     // You can override the logo as well. Use a string or a script that exports a string.
     branding: {
       logo: require('./inc/logo'),
-      color: 'yellow'
+      color: 'yellow',
     },
     // Whether or not to host static files and where...
     statics: {
       active: false,
       folder: 'statics',
-      endpoint: '/remote'
+      endpoint: '/remote',
     },
     // If a folder should be watched, send it to report...
     watch: {
-      active: false
+      active: false,
     },
     // Where the data from services comes from.
-    persistence: 'demo'
+    persistence: 'demo',
   },
   services: {
     defaults: {
       model: {
-        freezeTableName: true
+        freezeTableName: true,
       },
       pagination: {
         default: 20,
-        max: 1000
+        max: 1000,
       },
       base: {
         // The base.folder can let you host things like /src/legacy-services/v1 etc.
         // Note that /services/ will check /services (root of your project) OR /src/services/
         folder: '/src/services/',
         // The base.endpoint can let you prepend your service with things like /api/v2/ etc.
-        mount: '/'
+        mount: '/',
       }
     },
     definitions: {
@@ -61,7 +61,7 @@ module.exports = {
           mount: '/',
           // This is where you would redefine the base folder for an individual service...
           // Note that /services/ will check /services (root of your project) OR /src/services/
-          folder: '/src/services/'
+          folder: '/src/services/',
         },
         config: {
           show: {
@@ -92,12 +92,12 @@ module.exports = {
             // Interval in ms to poll status history.
             interval: 1000,
             // Number of history snapshots to store.
-            count: 60
+            count: 60,
           },
           // How long to cache disk statistics in seconds (a query can take a second or longer).
-          diskCache: 60
-        }
-      }
-    }
-  }
-};
+          diskCache: 60,
+        },
+      },
+    },
+  },
+}

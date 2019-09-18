@@ -1,23 +1,23 @@
 // Looks like we must do this here unfortunately...
-global.isMain = require.main === module;
+global.isMain = require.main === module
 
 // Set the default configuration...
-var CONFIG = require('config');
-CONFIG.util.setModuleDefaults('acter', require('./config.js'));
+var CONFIG = require('config')
+CONFIG.util.setModuleDefaults('acter', require('./config.js'))
 
 // Get the app configuration...
-const config = require('config');
-const chalk = require('chalk');
+const config = require('config')
+const chalk = require('chalk')
 
 // Set the debug mode...
-process.env.debug = config.acter.server.debug;
+process.env.debug = config.acter.server.debug
 
 // Draw the logo...
-console.log(chalk[config.acter.server.branding.color](config.acter.server.branding.logo));
+console.log(chalk[config.acter.server.branding.color](config.acter.server.branding.logo))
 
-const app = require('./inc/start')( config );
+const app = require('./inc/start')( config )
 module.exports = {
   app: app,
   util: require('./inc/util'),
-  config: config
-};
+  config: config,
+}
