@@ -27,7 +27,7 @@ function getStats(previous, interval) {
   cpu.percent = (cpu.system + cpu.user) / (interval * 1000);
 
   // Get the total server CPU usage...
-  var cpus = os.cpus();
+  // var cpus = os.cpus();
   // Store the difference...
   var difference =  {
     process: {
@@ -43,7 +43,7 @@ function getStats(previous, interval) {
   return difference;
 }
 
-function simplifyStats(stat, interval) {
+function simplifyStats(stat) {
   // Reduce each CPU stats...
   if (!stat) return;
   var stats1 = machineCPUTotal(lastCPU);
@@ -79,7 +79,7 @@ var lastCPU = os.cpus();
 var cpuStart = { user: 0, nice: 0, sys: 0, irq: 0, idle: 0 };
 
 setInterval(() => {
-  statsSimple.unshift(simplifyStats(stats[0], interval));
+  statsSimple.unshift(simplifyStats(stats[0]));
   stats.unshift(getStats(stats[0], interval)); // Get the current stats by passing the last stats, and then adding it to the stats array
 
   if (stats.length > seconds) stats.pop();

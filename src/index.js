@@ -5,12 +5,8 @@ global.isMain = require.main === module;
 var CONFIG = require('config');
 CONFIG.util.setModuleDefaults('acter', require('./config.js'));
 
-
-// process.env['NODE_CONFIG'] = JSON.stringify( { server: { build: 9 } } );
-
 // Get the app configuration...
 const config = require('config');
-
 const chalk = require('chalk');
 
 // Set the debug mode...
