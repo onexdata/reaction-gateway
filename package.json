@@ -33,7 +33,7 @@
     "mysql2": "^1.6.1",
     "os-utils": "0.0.14",
     "portfinder": "^1.0.19",
-    "sequelize": "^4.44.3",
+    "sequelize": "^5.15.1",
     "sqlite3": "^4.0.2"
   },
   "devDependencies": {
